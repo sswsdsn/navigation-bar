@@ -1,0 +1,163 @@
+<!-- Article Starts - DO NOT ADD HTML/BODY START TAGS-->
+
+<!-- Download Links -->
+<ul class=download>
+<li><a href='ColorizedScrolls/ColorizedScrolls_demo.zip'>Download demo project - 24 Kb</a></li>
+</ul>
+
+<!-- Article image -->
+<p><img src='ColorizedScrolls_Files/ColorizedScrolls.jpg' alt='Sample Image - ColorizedScrolls.jpg' height='411' width='448'></p>
+
+<!-- Add the rest of your HTML here -->
+<p>
+
+<div align="center">
+  <center>
+  <table border="0" cellpadding="0" cellspacing="8" width="665">
+    <tr>
+      <td width="12"></td>
+      <td valign="middle" width="406" nowrap><font size="5">Colorizing the scroll bars of your
+        window</font><font size="5">:</font></td>
+      <td valign="middle" width="75"><font size="5"></font><font size="5"></font><br>
+      </td>
+      <td width="18"></td>
+      <td width="115"></td>
+    </tr>
+    <tr>
+      <td width="12"></td>
+      <td valign="top" width="481" colspan="2">
+        <p align="justify"><font size="3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        From&nbsp; so&nbsp; many days, I wanted&nbsp; a&nbsp; technique&nbsp; to&nbsp;
+        colorize the scroll bars&nbsp; of&nbsp; my windows&nbsp; so that&nbsp; it&nbsp;
+        would&nbsp; be&nbsp;</font> <font size="3">one&nbsp; of&nbsp; the&nbsp; attractive&nbsp;
+        part&nbsp; of my unique&nbsp; User&nbsp; Interfaces&nbsp; as&nbsp; well&nbsp;
+        as&nbsp;</font> <font size="3">it&nbsp; would&nbsp; become&nbsp;</font> <font size="3">the&nbsp;
+        standard&nbsp;&nbsp; of&nbsp;&nbsp; my company's softwares packages especially&nbsp;
+        those&nbsp; developed&nbsp; in VC++.  After a long time&nbsp; I&nbsp; found
+        out some hints on Microsoft sites which&nbsp; helped me to come out of my problem. Here is the way how&nbsp;
+        to&nbsp; change&nbsp; the&nbsp; background color of&nbsp;&nbsp; the scroll bars of your windows&nbsp;
+        as&nbsp; well&nbsp; as a&nbsp; sample program&nbsp; is attached for downloading.&nbsp;</font></p>
+        <p align="justify"><font size="3"><b>	Technical Details</b>:&nbsp;&nbsp;&nbsp;&nbsp;
+        Actually for the windows common controls, such as  the edit controls, we take the advantage of  WM_CTLCOLOR message as said in many a books and the
+        great&nbsp; msdn documents.&nbsp;&nbsp; It works fine as they promise.&nbsp;&nbsp;
+        But this message has an exception for our only problem.&nbsp; That is,&nbsp;
+        it would not&nbsp; be posted during the painting&nbsp; of&nbsp; our&nbsp;
+        windows&nbsp; common scroll bars&nbsp; that&nbsp; are added&nbsp; as&nbsp;
+        builtin&nbsp; to&nbsp; your&nbsp; window&nbsp; when&nbsp; you&nbsp; set the WS_VSCROLL&nbsp;
+        and WS_HSCROLL styles to your window. Because the scroll bars created&nbsp;
+        thus doesn't&nbsp; have&nbsp; a&nbsp; piece of code to be customized, because it is a builtin feature&nbsp;&nbsp;&nbsp;
+        of MFC,&nbsp; Eg:&nbsp; if you select a base class of your view class to be
+        CScrollView, everything would be easier for you but no more customization.</font></p>
+        <p align="justify"><font size="3"><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        However&nbsp; this message&nbsp; will&nbsp; be&nbsp; posted&nbsp; if&nbsp;
+        you forget about these granted type of scroll bars and put some effort to have create and attach your userdefined scrollbars to your window. It is very easy. You carry on with me.&nbsp;<br>
+           Develop&nbsp; an MFC application of type single doc.&nbsp; Give&nbsp;
+        a&nbsp; very nice name for the&nbsp; project&nbsp; as&nbsp; you wish and&nbsp;
+        accept&nbsp; all&nbsp; the optional selections&nbsp; in&nbsp; the&nbsp; next comming appwizard pages except the last step that&nbsp;
+        is&nbsp; in&nbsp; the 6th step,&nbsp; select the base class&nbsp; of&nbsp;
+        your&nbsp; view&nbsp; class&nbsp; to&nbsp; be CSrollView.&nbsp; [This adds the builtin scroll bars&nbsp;
+        for us which we don't want].&nbsp; But&nbsp; this&nbsp; is&nbsp; just&nbsp;
+        to&nbsp; check&nbsp; whether what I said above&nbsp; is&nbsp; correct or wrong. That is MFC hides almost everything about the scroll bars that
+        it adds.&nbsp;&nbsp; However this example should work even if you select any base class of your view class. That's true because we ourselves are going to get whole burden of maintaining the scroll bars of our window.<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        After getting the skeleton code from the appwizard, go and add some variables of type CScrollBar in your frame class as shown below.<br>
+        <br>
+	class CMainFrame : public CFrameWnd&nbsp;<br>
+	{<br>
+	protected:<br>
+	  CScrollbar myHScroll;<br>
+	  CScrollBar myVScroll;<br>
+                    CScrollBar myCutebox;<br>
+	  •••<br>
+	};<br>
+        <br>
+        <br>
+        Then, create the scrollbars as usual after your frame is created:<br>
+        <br>
+        int CMainFrame::OnCreate(...)<br>
+        {<br>
+  •••<br>
+  CRect rect(0,0,0,0);<br>
+  VERIFY(myHScroll.Create(WS_VISIBLE|WS_CHILD|SBS_HORZ,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        rect, this, AFX_IDW_HSCROLL_FIRST));<br>
+  VERIFY(myVScroll.Create(WS_VISIBLE|WS_CHILD|SBS_VERT,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        rect, this, AFX_IDW_HSCROLL_FIRST+1));<br>
+  VERIFY(myCutebox.Create(WS_VISIBLE|WS_CHILD|SBS_SIZEBOX,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        rect, this,-1));<br>
+  return 0;<br>
+        }<br>
+        <br>
+        As you can see above, you also have to create a scroll bar box, the little cute window that&nbsp;
+        goes&nbsp; where the horizontal and vertical scroll bars meet, so that when can size
+        your window you can avoid that blank spot.<br>
+        Once you've created the scroll bars, there are several things to be taken care. You have to keep&nbsp;
+        sizing&nbsp; them when&nbsp; you resize your window, also you have&nbsp;
+        to process notifications, and lastly you should get your view to use them. I am doing&nbsp;
+        it&nbsp; by&nbsp; virtual&nbsp; function&nbsp; that&nbsp; is&nbsp; provide&nbsp;
+        for CSrollView. Now, did you understand why I selected CSrollView as the base class in the beginning.<br>
+        </font></p>
+        <p align="justify"><font size="3">Override the GetScrollBarCtrl function into your View
+        class and add the following code:</font></p>
+        <p align="justify"><font size="3"><br>
+        CScrollBar* CCustomScrollBarsView::GetScrollBarCtrl(int nBar) const<br>
+        {<br>
+  	CWnd* pParent = GetParent();<br>
+ 	 UINT nID = AFX_IDW_HSCROLL_FIRST;<br>
+  	if (nBar==SB_VERT)  <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    	         nID++; <br>
+	return (CScrollBar*)pParent->GetDlgItem(nID);<br>
+        }<br>
+        <br>
+        and finally you have to override the RecalcLayout virtual function in your frame class and add the code as follows:<br>
+        <br>
+        void CMainFrame::RecalcLayout(BOOL bNotify)<br>
+        {<br>
+    CFrameWnd::RecalcLayout();<br>
+    CCustomScrollBarsView* pView =  <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      (CCustomScrollBarsView*)GetActiveView();<br>
+    if (pView) {<br>
+        CRect rect;<br>
+        pView->GetWindowRect(&amp;rect);<br>
+        ScreenToClient(&amp;rect);<br>
+        <br>
+        int cyHScroll = GetSystemMetrics(SM_CYHSCROLL);<br>
+        int cxVScroll = GetSystemMetrics(SM_CXVSCROLL);<br>
+        rect.right  -= cxVScroll;<br>
+        rect.bottom -= cyHScroll;<br>
+        pView->MoveWindow(rect);<br>
+        <br>
+        // move the scroll bars<br>
+        rect.left   = rect.right;<br>
+        rect.right += cxVScroll;<br>
+        myVScroll.MoveWindow(rect);<br>
+        <br>
+        rect.left   = 0;<br>
+        rect.right -= cxVScroll;<br>
+        rect.top    = rect.bottom;<br>
+        rect.bottom+= cyHScroll;<br>
+        myHScroll.MoveWindow(rect);<br>
+        <br>
+        rect.left = rect.right;<br>
+        rect.right+=cxVScroll;<br>
+        m_cuteBox.MoveWindow(rect);<br>
+    }<br>
+        }<br>
+        <br>
+        That's it all. Go get the colorized scrollbars.&nbsp;<br>
+        <br>
+        <b>Acknowledgements</b>: In my sample attached, I have borrowed the code of displaying the the image files from
+        <b>Mr. Chensu</b> from the codeguru site. I acknowledge him.  I would like to thank
+        <b> Paul DiLascia</b> for getting me the technique to see these type of custom scroll bars.</font></td>
+      <td width="18"></td>
+      <td valign="top" width="115"></td>
+    </tr>
+  </table>
+  </center>
+</div>
+
